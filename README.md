@@ -1,6 +1,3 @@
-[![Travis Build Status](https://travis-ci.org/cortesi/modd.svg?branch=master)](https://travis-ci.org/cortesi/modd)
-
-
 Modd is a developer tool that triggers commands and manages daemons in response
 to filesystem changes.
 
@@ -24,12 +21,12 @@ Example                                      | Description
 
 Modd is a single binary with no external dependencies, released for OSX,
 Windows, Linux, FreeBSD, NetBSD and OpenBSD. Go to the [releases
-page](https://github.com/cortesi/modd/releases/latest), download the package for
+page](https://github.com/flowchartsman/modd/releases/latest), download the package for
 your OS, and copy the binary to somewhere on your PATH.
 
 Alternatively, with Go 1.17+ installed, you can install `modd` directly using `go install`. Please note that CGO is required, so if you happen to have it disabled you will need to prepend the `CGO_ENABLED=1` environment variable.
 
-    $ go install github.com/cortesi/modd/cmd/modd@latest
+    $ go install github.com/flowchartsman/modd/cmd/modd@latest
 
 # Quick start
 
