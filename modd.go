@@ -8,11 +8,11 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/cortesi/modd/conf"
-	"github.com/cortesi/modd/notify"
-	"github.com/cortesi/modd/shell"
 	"github.com/cortesi/moddwatch"
 	"github.com/cortesi/termlog"
+	"github.com/flowchartsman/modd/conf"
+	"github.com/flowchartsman/modd/notify"
+	"github.com/flowchartsman/modd/shell"
 )
 
 // Version is the modd release version
@@ -192,7 +192,6 @@ func (mr *ModRunner) runOnChan(modchan chan *moddwatch.Mod, readyCallback func()
 	// FIXME: This takes a long time. We could start it in parallel with the
 	// first process run in a goroutine
 	watcher, err := moddwatch.Watch(currentDir, ipatts, []string{}, lullTime, modchan)
-
 	if err != nil {
 		return fmt.Errorf("Error watching: %s", err)
 	}

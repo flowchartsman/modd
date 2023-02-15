@@ -6,9 +6,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/cortesi/modd"
-	"github.com/cortesi/modd/notify"
 	"github.com/cortesi/termlog"
+	"github.com/flowchartsman/modd"
+	"github.com/flowchartsman/modd/notify"
 	"gopkg.in/alecthomas/kingpin.v2"
 	"mvdan.cc/sh/v3/interp"
 	"mvdan.cc/sh/v3/syntax"

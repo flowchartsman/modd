@@ -9,10 +9,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cortesi/modd/conf"
-	"github.com/cortesi/modd/utils"
 	"github.com/cortesi/moddwatch"
 	"github.com/cortesi/termlog"
+	"github.com/flowchartsman/modd/conf"
+	"github.com/flowchartsman/modd/utils"
 )
 
 const timeout = 5 * time.Second
@@ -20,12 +20,12 @@ const timeout = 5 * time.Second
 func touch(p string) {
 	p = filepath.FromSlash(p)
 	d := filepath.Dir(p)
-	err := os.MkdirAll(d, 0777)
+	err := os.MkdirAll(d, 0o777)
 	if err != nil {
 		panic(err)
 	}
 
-	f, err := os.OpenFile(p, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0777)
+	f, err := os.OpenFile(p, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0o777)
 	if err != nil {
 		panic(err)
 	}
@@ -54,12 +54,12 @@ func events(p string) []string {
 func _testWatch(t *testing.T, modfunc func(), expected []string) {
 	defer utils.WithTempDir(t)()
 
-	err := os.MkdirAll("a/inner", 0777)
+	err := os.MkdirAll("a/inner", 0o777)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	err = os.MkdirAll("b", 0777)
+	err = os.MkdirAll("b", 0o777)
 	if err != nil {
 		t.Fatal(err)
 	}

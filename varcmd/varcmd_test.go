@@ -6,8 +6,8 @@ import (
 	"path"
 	"testing"
 
-	"github.com/cortesi/modd/conf"
-	"github.com/cortesi/modd/utils"
+	"github.com/flowchartsman/modd/conf"
+	"github.com/flowchartsman/modd/utils"
 )
 
 var quotePathTests = []struct {
@@ -60,11 +60,11 @@ func TestVarCmd(t *testing.T) {
 	defer utils.WithTempDir(t)()
 
 	dst := path.Join("./tdir")
-	err := os.MkdirAll(dst, 0777)
+	err := os.MkdirAll(dst, 0o777)
 	if err != nil {
 		t.Fatalf("MkdirAll: %v", err)
 	}
-	err = ioutil.WriteFile(path.Join(dst, "tfile"), []byte("test"), 0777)
+	err = ioutil.WriteFile(path.Join(dst, "tfile"), []byte("test"), 0o777)
 	if err != nil {
 		t.Fatalf("WriteFile: %v", err)
 	}

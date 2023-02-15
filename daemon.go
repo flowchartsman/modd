@@ -6,10 +6,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/cortesi/modd/conf"
-	"github.com/cortesi/modd/shell"
-	"github.com/cortesi/modd/varcmd"
 	"github.com/cortesi/termlog"
+	"github.com/flowchartsman/modd/conf"
+	"github.com/flowchartsman/modd/shell"
+	"github.com/flowchartsman/modd/varcmd"
 )
 
 const (

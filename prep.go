@@ -3,12 +3,12 @@ package modd
 import (
 	"time"
 
-	"github.com/cortesi/modd/conf"
-	"github.com/cortesi/modd/notify"
-	"github.com/cortesi/modd/shell"
-	"github.com/cortesi/modd/varcmd"
 	"github.com/cortesi/moddwatch"
 	"github.com/cortesi/termlog"
+	"github.com/flowchartsman/modd/conf"
+	"github.com/flowchartsman/modd/notify"
+	"github.com/flowchartsman/modd/shell"
+	"github.com/flowchartsman/modd/varcmd"
 )
 
 // ProcError is a process error, possibly containing command output
