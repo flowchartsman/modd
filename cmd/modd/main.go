@@ -52,6 +52,10 @@ var debug = kingpin.Flag("debug", "Debugging for modd development").
 var exec = kingpin.Flag("exec", "Execute a command in the built-in shell").
 	String()
 
+var escapeExit = kingpin.Flag("escape-exit", "Will monitor the keyboard for the <ESC> key, and exit if pressed").
+	Default("false").
+	Bool()
+
 func main() {
 	kingpin.CommandLine.HelpFlag.Short('h')
 	kingpin.Version(modd.Version)
@@ -109,7 +113,7 @@ func main() {
 		notifiers = append(notifiers, &notify.BeepNotifier{})
 	}
 
-	mr, err := modd.NewModRunner(*file, log, notifiers, !(*noconf))
+	mr, err := modd.NewModRunner(*file, log, notifiers, !(*noconf), *escapeExit)
 	if err != nil {
 		log.Shout("%s", err)
 		return

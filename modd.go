@@ -6,10 +6,12 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"syscall"
 	"time"
 
 	"github.com/cortesi/moddwatch"
 	"github.com/cortesi/termlog"
+	"github.com/eiannone/keyboard"
 	"github.com/flowchartsman/modd/conf"
 	"github.com/flowchartsman/modd/notify"
 	"github.com/flowchartsman/modd/shell"
@@ -59,15 +61,17 @@ type ModRunner struct {
 	ConfPath   string
 	ConfReload bool
 	Notifiers  []notify.Notifier
+	EscapeExit bool
 }
 
 // NewModRunner constructs a new ModRunner
-func NewModRunner(confPath string, log termlog.TermLog, notifiers []notify.Notifier, confreload bool) (*ModRunner, error) {
+func NewModRunner(confPath string, log termlog.TermLog, notifiers []notify.Notifier, confreload bool, escapeExit bool) (*ModRunner, error) {
 	mr := &ModRunner{
 		Log:        log,
 		ConfPath:   confPath,
 		ConfReload: confreload,
 		Notifiers:  notifiers,
+		EscapeExit: escapeExit,
 	}
 	err := mr.ReadConfig()
 	if err != nil {
@@ -171,13 +175,35 @@ func (mr *ModRunner) runOnChan(modchan chan *moddwatch.Mod, readyCallback func()
 		return err
 	}
 	defer dworld.Shutdown(os.Kill)
+	var keyEvents <-chan keyboard.KeyEvent
+	if mr.EscapeExit {
+		mr.Log.Shout("press <ESC> to exit gracefully")
+		keyEvents, err = keyboard.GetKeys(5)
+		if err != nil {
+			return err
+		}
+	}
 
 	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt, os.Kill)
-	defer signal.Reset(os.Interrupt, os.Kill)
+	signal.Notify(c, os.Interrupt)
+	defer signal.Reset(os.Interrupt, syscall.SIGTERM)
+
 	go func() {
-		dworld.Shutdown(<-c)
-		os.Exit(0)
+		for {
+			select {
+			case sig := <-c:
+				dworld.Shutdown(sig)
+				if sig == syscall.SIGTERM {
+					os.Exit(1)
+				}
+				os.Exit(0)
+			case keyEvent := <-keyEvents:
+				if keyEvent.Key == keyboard.KeyEsc {
+					dworld.Shutdown(os.Interrupt)
+					os.Exit(0)
+				}
+			}
+		}
 	}()
 
 	ipatts := mr.Config.IncludePatterns()

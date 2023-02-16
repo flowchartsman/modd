@@ -169,6 +169,7 @@ func (dp *DaemonPen) Shutdown(sig os.Signal) {
 // DaemonWorld represents the entire world of daemons
 type DaemonWorld struct {
 	DaemonPens []*DaemonPen
+	sdOnce     sync.Once
 }
 
 // NewDaemonWorld creates a DaemonWorld
@@ -182,12 +183,14 @@ func NewDaemonWorld(cnf *conf.Config, log termlog.TermLog) (*DaemonWorld, error)
 		daemonPens[i] = d
 
 	}
-	return &DaemonWorld{daemonPens}, nil
+	return &DaemonWorld{DaemonPens: daemonPens}, nil
 }
 
 // Shutdown all daemons with signal s
 func (dw *DaemonWorld) Shutdown(s os.Signal) {
-	for _, dp := range dw.DaemonPens {
-		dp.Shutdown(s)
-	}
+	dw.sdOnce.Do(func() {
+		for _, dp := range dw.DaemonPens {
+			dp.Shutdown(s)
+		}
+	})
 }
