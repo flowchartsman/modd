@@ -64,6 +64,10 @@ func NewExecutor(shell string, command string, dir string, env []string) (*Execu
 	}, nil
 }
 
+// func mergeEnv(a []string, b []string) []string {
+// 	if len(a)
+// }
+
 func (e *Executor) start(
 	log termlog.Stream, bufferr bool,
 ) (*exec.Cmd, *bytes.Buffer, *sync.WaitGroup, error) {
@@ -74,8 +78,8 @@ func (e *Executor) start(
 	if err != nil {
 		return nil, nil, nil, err
 	}
-	if e.Env != nil {
-		cmd.Env = e.Env
+	if len(e.Env) > 0 {
+		cmd.Env = append(os.Environ(), e.Env...)
 	}
 	e.cmd = cmd
 
